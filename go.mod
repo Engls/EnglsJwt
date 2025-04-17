@@ -1,4 +1,4 @@
-module EnglsJwt
+module github.com/Engls/EnglsJwt
 
 go 1.23.6
 
