@@ -1,4 +1,4 @@
-package github.com/Engls/EnglsJwt
+package EnglsJwt
 
 import (
 	"errors"
