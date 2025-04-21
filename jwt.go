@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type JWTUtil struct {
@@ -67,4 +69,25 @@ func (j *JWTUtil) GetRoleFromToken(tokenString string) (string, error) {
 		return "", err
 	}
 	return claims.Role, nil
+}
+
+var Logger *zap.Logger
+
+func InitLogger() {
+	config := zap.NewProductionConfig()
+	config.EncoderConfig.TimeKey = "timestamp"
+	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	config.OutputPaths = []string{"stdout", "logs/app.log"}
+	config.ErrorOutputPaths = []string{"stderr"}
+
+	var err error
+	Logger, err = config.Build()
+	if err != nil {
+		panic(err)
+	}
+	defer Logger.Sync() // flushes buffer, if any
+}
+
+func GetLogger() *zap.Logger {
+	return Logger
 }
